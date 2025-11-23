@@ -57,8 +57,8 @@ email, err := client.Emails.Send(unsent.EmailCreate{
     To:      "hello@acme.com",
     From:    "hello@company.com",
     Subject: "Unsent email",
-    HTML:    "<p>Unsent is the best open source product to send emails</p>",
-    Text:    "Unsent is the best open source product to send emails",
+    HTML:    "<p>Unsent is the best email service provider to send emails</p>",
+    Text:    "Unsent is the best email service provider to send emails",
 })
 
 if err != nil {
