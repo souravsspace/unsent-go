@@ -10,6 +10,7 @@ import (
 )
 
 const DefaultBaseURL = "https://api.unsent.dev"
+const Version = "1.0.1"
 
 // HTTPError represents an HTTP error from the API
 type HTTPError struct {
@@ -96,8 +97,23 @@ func WithRaiseOnError(raise bool) ClientOption {
 	}
 }
 
+// RequestOption is a function that configures a request
+type RequestOption func(*http.Request)
+
+// WithHeader sets a header on the request
+func WithHeader(key, value string) RequestOption {
+	return func(req *http.Request) {
+		req.Header.Set(key, value)
+	}
+}
+
+// WithIdempotencyKey sets the Idempotency-Key header
+func WithIdempotencyKey(key string) RequestOption {
+	return WithHeader("Idempotency-Key", key)
+}
+
 // request performs an HTTP request and returns the response data and error
-func (c *Client) request(method, path string, body interface{}) (interface{}, *APIError) {
+func request[T any](c *Client, method, path string, body interface{}, opts ...RequestOption) (*T, *APIError) {
 	var reqBody io.Reader
 	if body != nil {
 		jsonData, err := json.Marshal(body)
@@ -114,6 +130,11 @@ func (c *Client) request(method, path string, body interface{}) (interface{}, *A
 
 	req.Header.Set("Authorization", "Bearer "+c.Key)
 	req.Header.Set("Content-Type", "application/json")
+
+	// Apply request options
+	for _, opt := range opts {
+		opt(req)
+	}
 
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
@@ -137,37 +158,37 @@ func (c *Client) request(method, path string, body interface{}) (interface{}, *A
 		return nil, &apiErr
 	}
 
-	var result interface{}
+	var result T
 	if len(respBody) > 0 {
 		if err := json.Unmarshal(respBody, &result); err != nil {
 			return nil, &APIError{Code: "INTERNAL_ERROR", Message: err.Error()}
 		}
 	}
 
-	return result, nil
+	return &result, nil
 }
 
 // Post performs a POST request
-func (c *Client) Post(path string, body interface{}) (interface{}, *APIError) {
-	return c.request("POST", path, body)
+func Post[T any](c *Client, path string, body interface{}, opts ...RequestOption) (*T, *APIError) {
+	return request[T](c, "POST", path, body, opts...)
 }
 
 // Get performs a GET request
-func (c *Client) Get(path string) (interface{}, *APIError) {
-	return c.request("GET", path, nil)
+func Get[T any](c *Client, path string, opts ...RequestOption) (*T, *APIError) {
+	return request[T](c, "GET", path, nil, opts...)
 }
 
 // Put performs a PUT request
-func (c *Client) Put(path string, body interface{}) (interface{}, *APIError) {
-	return c.request("PUT", path, body)
+func Put[T any](c *Client, path string, body interface{}, opts ...RequestOption) (*T, *APIError) {
+	return request[T](c, "PUT", path, body, opts...)
 }
 
 // Patch performs a PATCH request
-func (c *Client) Patch(path string, body interface{}) (interface{}, *APIError) {
-	return c.request("PATCH", path, body)
+func Patch[T any](c *Client, path string, body interface{}, opts ...RequestOption) (*T, *APIError) {
+	return request[T](c, "PATCH", path, body, opts...)
 }
 
 // Delete performs a DELETE request
-func (c *Client) Delete(path string, body interface{}) (interface{}, *APIError) {
-	return c.request("DELETE", path, body)
+func Delete[T any](c *Client, path string, body interface{}, opts ...RequestOption) (*T, *APIError) {
+	return request[T](c, "DELETE", path, body, opts...)
 }

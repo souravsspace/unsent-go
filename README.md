@@ -127,6 +127,35 @@ if err != nil {
 }
 ```
 
+#### Idempotent Retries
+
+```go
+// Idempotent retries: same payload + same key returns the original response
+payload := unsent.EmailCreate{
+    To:      "hello@acme.com",
+    From:    "hello@company.com",
+    Subject: "Welcome!",
+    HTML:    "<p>Welcome to our service</p>",
+}
+
+resp, err := client.Emails.Send(
+    payload,
+    unsent.WithIdempotencyKey("signup-123"),
+)
+
+// Works for batch requests as well
+batchPayload := []unsent.EmailBatchItem{
+    // ... items
+}
+
+resp, err := client.Emails.Batch(
+    batchPayload,
+    unsent.WithIdempotencyKey("bulk-welcome-1"),
+)
+
+// If the same key is reused with a different payload, the API responds with HTTP 409.
+```
+
 ### Managing Emails
 
 #### Get Email Details
