@@ -29,7 +29,7 @@ import (
 )
 
 func main() {
-    client, err := unsent.NewClient("us_12345")
+    client, err := unsent.NewClient("un_xxxx")
     if err != nil {
         log.Fatal(err)
     }
@@ -345,7 +345,7 @@ domain, err := client.Domains.Get(123)
 By default, the SDK returns errors for non-2xx responses:
 
 ```go
-client, err := unsent.NewClient("us_12345")
+client, err := unsent.NewClient("un_xxxx")
 if err != nil {
     log.Fatal(err)
 }
@@ -367,7 +367,7 @@ if err != nil {
 To disable automatic error raising:
 
 ```go
-client, err := unsent.NewClient("us_12345", unsent.WithRaiseOnError(false))
+client, err := unsent.NewClient("un_xxxx", unsent.WithRaiseOnError(false))
 ```
 
 ### Custom HTTP Client
@@ -381,7 +381,7 @@ httpClient := &http.Client{
     Timeout: 30 * time.Second,
 }
 
-client, err := unsent.NewClient("us_12345", unsent.WithHTTPClient(httpClient))
+client, err := unsent.NewClient("un_xxxx", unsent.WithHTTPClient(httpClient))
 ```
 
 ## API Reference
