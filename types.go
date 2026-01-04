@@ -1,11 +1,21 @@
 package unsent
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // APIError represents an error response from the API
 type APIError struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+}
+
+func (e *APIError) Error() string {
+	if e == nil {
+		return "nil APIError"
+	}
+	return fmt.Sprintf("API Error: %s (code: %s)", e.Message, e.Code)
 }
 
 // Attachment represents an email attachment
@@ -30,13 +40,7 @@ type EmailCreate struct {
 
 // EmailCreateResponse represents the response from creating an email
 type EmailCreateResponse struct {
-	ID          string     `json:"id"`
-	To          string     `json:"to"`
-	From        string     `json:"from"`
-	Subject     string     `json:"subject"`
-	Status      string     `json:"status"`
-	ScheduledAt *time.Time `json:"scheduledAt,omitempty"`
-	CreatedAt   time.Time  `json:"createdAt"`
+	EmailID string `json:"emailId"`
 }
 
 // Email represents an email
@@ -66,16 +70,12 @@ type EmailUpdate struct {
 
 // EmailUpdateResponse represents the response from updating an email
 type EmailUpdateResponse struct {
-	ID        string    `json:"id"`
-	Status    string    `json:"status"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	EmailID string `json:"emailId"`
 }
 
 // EmailCancelResponse represents the response from canceling an email
 type EmailCancelResponse struct {
-	ID        string    `json:"id"`
-	Status    string    `json:"status"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	EmailID string `json:"emailId"`
 }
 
 // EmailBatchItem represents a single email in a batch
@@ -91,7 +91,7 @@ type EmailBatchItem struct {
 
 // EmailBatchResponse represents the response from sending batch emails
 type EmailBatchResponse struct {
-	Emails []EmailCreateResponse `json:"emails"`
+	Data []EmailCreateResponse `json:"data"`
 }
 
 // Contact represents a contact
