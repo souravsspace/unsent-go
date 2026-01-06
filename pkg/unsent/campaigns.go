@@ -7,8 +7,13 @@ type CampaignsClient struct {
 	client *Client
 }
 
+// List retrieves all campaigns
+func (c *CampaignsClient) List() (*[]Campaign, *APIError) {
+	return Get[[]Campaign](c.client, "/campaigns")
+}
+
 // Create creates a new campaign
-func (c *CampaignsClient) Create(payload CampaignCreate) (*CampaignCreateResponse, *APIError) {
+func (c *CampaignsClient) Create(payload CreateCampaignJSONBody) (*CampaignCreateResponse, *APIError) {
 	return Post[CampaignCreateResponse](c.client, "/campaigns", payload)
 }
 
@@ -18,7 +23,7 @@ func (c *CampaignsClient) Get(campaignID string) (*Campaign, *APIError) {
 }
 
 // Schedule schedules a campaign
-func (c *CampaignsClient) Schedule(campaignID string, payload CampaignSchedule) (*CampaignScheduleResponse, *APIError) {
+func (c *CampaignsClient) Schedule(campaignID string, payload ScheduleCampaignJSONBody) (*CampaignScheduleResponse, *APIError) {
 	return Post[CampaignScheduleResponse](c.client, fmt.Sprintf("/campaigns/%s/schedule", campaignID), payload)
 }
 

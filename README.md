@@ -25,7 +25,7 @@ import (
     "fmt"
     "log"
     
-    "github.com/souravsspace/unsent-go"
+    "github.com/souravsspace/unsent-go/pkg/unsent"
 )
 
 func main() {
@@ -186,6 +186,65 @@ if err != nil {
     log.Printf("Error: %v", err)
 } else {
     fmt.Println("Email cancelled successfully")
+}
+```
+
+#### List Emails
+
+```go
+// List all emails with pagination
+emails, err := client.Emails.List(unsent.ListEmailsParams{
+    Page:  unsent.StringPtr("1"),
+    Limit: unsent.StringPtr("50"),
+})
+
+if err != nil {
+    log.Printf("Error: %v", err)
+} else {
+    for _, email := range *emails {
+        fmt.Printf("Email ID: %s, Status: %s\n", email.ID, email.Status)
+    }
+}
+```
+
+#### Get Bounced Emails
+
+```go
+bounces, err := client.Emails.GetBounces(unsent.GetBouncesParams{
+    Page:  unsent.Float32Ptr(1.0),
+    Limit: unsent.Float32Ptr(20.0),
+})
+
+if err != nil {
+    log.Printf("Error: %v", err)
+} else {
+    fmt.Printf("Found %d bounced emails\n", len(*bounces))
+}
+```
+
+#### Get Spam Complaints
+
+```go
+complaints, err := client.Emails.GetComplaints(unsent.GetComplaintsParams{
+    Page:  unsent.Float32Ptr(1.0),
+    Limit: unsent.Float32Ptr(20.0),
+})
+
+if err != nil {
+    log.Printf("Error: %v", err)
+}
+```
+
+#### Get Unsubscribes
+
+```go
+unsubscribes, err := client.Emails.GetUnsubscribes(unsent.GetUnsubscribesParams{
+    Page:  unsent.Float32Ptr(1.0),
+    Limit: unsent.Float32Ptr(20.0),
+})
+
+if err != nil {
+    log.Printf("Error: %v", err)
 }
 ```
 
@@ -395,23 +454,37 @@ client, err := unsent.NewClient("un_xxxx", unsent.WithHTTPClient(httpClient))
 
 ### Email Methods
 
-- `client.Emails.Send(payload)` - Send an email (alias for Create)
-- `client.Emails.Create(payload)` - Create and send an email
-- `client.Emails.Batch(emails)` - Send multiple emails in batch
+- `client.Emails.Send(payload, opts...)` - Send an email (alias for Create)
+- `client.Emails.Create(payload, opts...)` - Create and send an email
+- `client.Emails.Batch(emails, opts...)` - Send multiple emails in batch
+- `client.Emails.List(params)` - List emails with optional filters (page, limit, dates)
 - `client.Emails.Get(emailID)` - Get email details
 - `client.Emails.Update(emailID, payload)` - Update a scheduled email
 - `client.Emails.Cancel(emailID)` - Cancel a scheduled email
+- `client.Emails.GetBounces(params)` - Get bounced emails with pagination
+- `client.Emails.GetComplaints(params)` - Get spam complaints with pagination
+- `client.Emails.GetUnsubscribes(params)` - Get unsubscribed emails with pagination
 
 ### Contact Methods
 
+- `client.Contacts.List(bookID, params)` - List contacts in a contact book with filters
 - `client.Contacts.Create(bookID, payload)` - Create a contact
 - `client.Contacts.Get(bookID, contactID)` - Get contact details
 - `client.Contacts.Update(bookID, contactID, payload)` - Update a contact
 - `client.Contacts.Upsert(bookID, contactID, payload)` - Upsert a contact
 - `client.Contacts.Delete(bookID, contactID)` - Delete a contact
 
+### Contact Book Methods
+
+- `client.ContactBooks.List()` - List all contact books
+- `client.ContactBooks.Get(id)` - Get contact book details
+- `client.ContactBooks.Create(payload)` - Create a contact book
+- `client.ContactBooks.Update(id, payload)` - Update a contact book
+- `client.ContactBooks.Delete(id)` - Delete a contact book
+
 ### Campaign Methods
 
+- `client.Campaigns.List()` - List all campaigns
 - `client.Campaigns.Create(payload)` - Create a campaign
 - `client.Campaigns.Get(campaignID)` - Get campaign details
 - `client.Campaigns.Schedule(campaignID, payload)` - Schedule a campaign
@@ -422,9 +495,18 @@ client, err := unsent.NewClient("un_xxxx", unsent.WithHTTPClient(httpClient))
 
 - `client.Domains.List()` - List all domains
 - `client.Domains.Create(payload)` - Create a domain
-- `client.Domains.Verify(domainID)` - Verify a domain
 - `client.Domains.Get(domainID)` - Get domain details
+- `client.Domains.Verify(domainID)` - Verify a domain
 - `client.Domains.Delete(domainID)` - Delete a domain
+
+### Other Resources
+
+- **Analytics**: `Get()`, `GetTimeSeries(params)`, `GetReputation(params)`
+- **API Keys**: `List()`, `Create(payload)`, `Delete(id)`
+- **Settings**: `Get()`
+- **Suppressions**: `List(params)`, `Add(payload)`, `Delete(email)`
+- **Templates**: `List()`, `Get(id)`, `Create(payload)`, `Update(id, payload)`, `Delete(id)`
+- **Webhooks** *(Future Feature)*: `List()`, `Create(payload)`, `Update(id, payload)`, `Delete(id)` - *Note: Webhook functionality is currently a placeholder for future implementation when webhook support is added to the Unsent API*
 
 ## Requirements
 

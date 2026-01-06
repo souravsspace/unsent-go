@@ -1,3 +1,7 @@
 module github.com/souravsspace/unsent-go
 
 go 1.25.2
+
+require github.com/oapi-codegen/runtime v1.1.2
+
+require github.com/google/uuid v1.5.0 // indirect

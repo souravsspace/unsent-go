@@ -10,19 +10,9 @@ import (
 )
 
 const DefaultBaseURL = "https://api.unsent.dev"
-const Version = "1.0.1"
+const Version = "1.0.2"
 
-// HTTPError represents an HTTP error from the API
-type HTTPError struct {
-	StatusCode int
-	APIErr     APIError
-	Method     string
-	Path       string
-}
 
-func (e *HTTPError) Error() string {
-	return fmt.Sprintf("%s %s -> %d %s: %s", e.Method, e.Path, e.StatusCode, e.APIErr.Code, e.APIErr.Message)
-}
 
 // Client is the main client for the Unsent API
 type Client struct {
@@ -32,10 +22,17 @@ type Client struct {
 	HTTPClient   *http.Client
 
 	// Resource clients
-	Emails    *EmailsClient
-	Contacts  *ContactsClient
-	Campaigns *CampaignsClient
-	Domains   *DomainsClient
+	Emails       *EmailsClient
+	Contacts     *ContactsClient
+	Campaigns    *CampaignsClient
+	Domains      *DomainsClient
+	Analytics    *AnalyticsClient
+	ApiKeys      *ApiKeysClient
+	ContactBooks *ContactBooksClient
+	Settings     *SettingsClient
+	Suppressions *SuppressionsClient
+	Templates    *TemplatesClient
+	Webhooks     *WebhooksClient
 }
 
 // NewClient creates a new Unsent API client
@@ -69,6 +66,13 @@ func NewClient(key string, options ...ClientOption) (*Client, error) {
 	client.Contacts = &ContactsClient{client: client}
 	client.Campaigns = &CampaignsClient{client: client}
 	client.Domains = &DomainsClient{client: client}
+	client.Analytics = &AnalyticsClient{client: client}
+	client.ApiKeys = &ApiKeysClient{client: client}
+	client.ContactBooks = &ContactBooksClient{client: client}
+	client.Settings = &SettingsClient{client: client}
+	client.Suppressions = &SuppressionsClient{client: client}
+	client.Templates = &TemplatesClient{client: client}
+	client.Webhooks = &WebhooksClient{client: client}
 
 	return client, nil
 }
