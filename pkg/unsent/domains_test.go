@@ -16,7 +16,7 @@ func TestDomains_List(t *testing.T) {
 			t.Errorf("expected GET, got %s", r.Method)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id": "123", "domain": "example.com"}]`))
+		w.Write([]byte(`[{"id": "123", "name": "example.com"}]`))
 	}))
 	defer server.Close()
 

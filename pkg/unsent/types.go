@@ -16,6 +16,56 @@ const (
 	SENDING CreateApiKeyJSONBodyPermission = "SENDING"
 )
 
+// Defines values for GetDomainAnalyticsParamsPeriod.
+const (
+	GetDomainAnalyticsParamsPeriodDay   GetDomainAnalyticsParamsPeriod = "day"
+	GetDomainAnalyticsParamsPeriodMonth GetDomainAnalyticsParamsPeriod = "month"
+	GetDomainAnalyticsParamsPeriodWeek  GetDomainAnalyticsParamsPeriod = "week"
+)
+
+// Defines values for GetEmailEventsParamsStatus.
+const (
+	GetEmailEventsParamsStatusBOUNCED          GetEmailEventsParamsStatus = "BOUNCED"
+	GetEmailEventsParamsStatusCANCELLED        GetEmailEventsParamsStatus = "CANCELLED"
+	GetEmailEventsParamsStatusCLICKED          GetEmailEventsParamsStatus = "CLICKED"
+	GetEmailEventsParamsStatusCOMPLAINED       GetEmailEventsParamsStatus = "COMPLAINED"
+	GetEmailEventsParamsStatusDELIVERED        GetEmailEventsParamsStatus = "DELIVERED"
+	GetEmailEventsParamsStatusDELIVERYDELAYED  GetEmailEventsParamsStatus = "DELIVERY_DELAYED"
+	GetEmailEventsParamsStatusFAILED           GetEmailEventsParamsStatus = "FAILED"
+	GetEmailEventsParamsStatusOPENED           GetEmailEventsParamsStatus = "OPENED"
+	GetEmailEventsParamsStatusQUEUED           GetEmailEventsParamsStatus = "QUEUED"
+	GetEmailEventsParamsStatusREJECTED         GetEmailEventsParamsStatus = "REJECTED"
+	GetEmailEventsParamsStatusRENDERINGFAILURE GetEmailEventsParamsStatus = "RENDERING_FAILURE"
+	GetEmailEventsParamsStatusSCHEDULED        GetEmailEventsParamsStatus = "SCHEDULED"
+	GetEmailEventsParamsStatusSENT             GetEmailEventsParamsStatus = "SENT"
+	GetEmailEventsParamsStatusSUPPRESSED       GetEmailEventsParamsStatus = "SUPPRESSED"
+)
+
+// Defines values for GetEventsParamsStatus.
+const (
+	GetEventsParamsStatusBOUNCED          GetEventsParamsStatus = "BOUNCED"
+	GetEventsParamsStatusCANCELLED        GetEventsParamsStatus = "CANCELLED"
+	GetEventsParamsStatusCLICKED          GetEventsParamsStatus = "CLICKED"
+	GetEventsParamsStatusCOMPLAINED       GetEventsParamsStatus = "COMPLAINED"
+	GetEventsParamsStatusDELIVERED        GetEventsParamsStatus = "DELIVERED"
+	GetEventsParamsStatusDELIVERYDELAYED  GetEventsParamsStatus = "DELIVERY_DELAYED"
+	GetEventsParamsStatusFAILED           GetEventsParamsStatus = "FAILED"
+	GetEventsParamsStatusOPENED           GetEventsParamsStatus = "OPENED"
+	GetEventsParamsStatusQUEUED           GetEventsParamsStatus = "QUEUED"
+	GetEventsParamsStatusREJECTED         GetEventsParamsStatus = "REJECTED"
+	GetEventsParamsStatusRENDERINGFAILURE GetEventsParamsStatus = "RENDERING_FAILURE"
+	GetEventsParamsStatusSCHEDULED        GetEventsParamsStatus = "SCHEDULED"
+	GetEventsParamsStatusSENT             GetEventsParamsStatus = "SENT"
+	GetEventsParamsStatusSUPPRESSED       GetEventsParamsStatus = "SUPPRESSED"
+)
+
+// Defines values for GetMetricsParamsPeriod.
+const (
+	GetMetricsParamsPeriodDay   GetMetricsParamsPeriod = "day"
+	GetMetricsParamsPeriodMonth GetMetricsParamsPeriod = "month"
+	GetMetricsParamsPeriodWeek  GetMetricsParamsPeriod = "week"
+)
+
 // Defines values for GetSuppressionsParamsReason.
 const (
 	GetSuppressionsParamsReasonCOMPLAINT   GetSuppressionsParamsReason = "COMPLAINT"
@@ -31,6 +81,60 @@ const (
 	AddSuppressionJSONBodyReasonMANUAL      AddSuppressionJSONBodyReason = "MANUAL"
 	AddSuppressionJSONBodyReasonUNSUBSCRIBE AddSuppressionJSONBodyReason = "UNSUBSCRIBE"
 )
+
+// Defines values for CreateWebhookJSONBodyEventTypes.
+const (
+	CreateWebhookJSONBodyEventTypesContactCreated        CreateWebhookJSONBodyEventTypes = "contact.created"
+	CreateWebhookJSONBodyEventTypesContactDeleted        CreateWebhookJSONBodyEventTypes = "contact.deleted"
+	CreateWebhookJSONBodyEventTypesContactUpdated        CreateWebhookJSONBodyEventTypes = "contact.updated"
+	CreateWebhookJSONBodyEventTypesDomainCreated         CreateWebhookJSONBodyEventTypes = "domain.created"
+	CreateWebhookJSONBodyEventTypesDomainDeleted         CreateWebhookJSONBodyEventTypes = "domain.deleted"
+	CreateWebhookJSONBodyEventTypesDomainUpdated         CreateWebhookJSONBodyEventTypes = "domain.updated"
+	CreateWebhookJSONBodyEventTypesDomainVerified        CreateWebhookJSONBodyEventTypes = "domain.verified"
+	CreateWebhookJSONBodyEventTypesEmailBounced          CreateWebhookJSONBodyEventTypes = "email.bounced"
+	CreateWebhookJSONBodyEventTypesEmailCancelled        CreateWebhookJSONBodyEventTypes = "email.cancelled"
+	CreateWebhookJSONBodyEventTypesEmailClicked          CreateWebhookJSONBodyEventTypes = "email.clicked"
+	CreateWebhookJSONBodyEventTypesEmailComplained       CreateWebhookJSONBodyEventTypes = "email.complained"
+	CreateWebhookJSONBodyEventTypesEmailDelivered        CreateWebhookJSONBodyEventTypes = "email.delivered"
+	CreateWebhookJSONBodyEventTypesEmailDeliveryDelayed  CreateWebhookJSONBodyEventTypes = "email.delivery_delayed"
+	CreateWebhookJSONBodyEventTypesEmailFailed           CreateWebhookJSONBodyEventTypes = "email.failed"
+	CreateWebhookJSONBodyEventTypesEmailOpened           CreateWebhookJSONBodyEventTypes = "email.opened"
+	CreateWebhookJSONBodyEventTypesEmailQueued           CreateWebhookJSONBodyEventTypes = "email.queued"
+	CreateWebhookJSONBodyEventTypesEmailRejected         CreateWebhookJSONBodyEventTypes = "email.rejected"
+	CreateWebhookJSONBodyEventTypesEmailRenderingFailure CreateWebhookJSONBodyEventTypes = "email.rendering_failure"
+	CreateWebhookJSONBodyEventTypesEmailSent             CreateWebhookJSONBodyEventTypes = "email.sent"
+	CreateWebhookJSONBodyEventTypesEmailSuppressed       CreateWebhookJSONBodyEventTypes = "email.suppressed"
+)
+
+// Defines values for UpdateWebhookJSONBodyEventTypes.
+const (
+	UpdateWebhookJSONBodyEventTypesContactCreated        UpdateWebhookJSONBodyEventTypes = "contact.created"
+	UpdateWebhookJSONBodyEventTypesContactDeleted        UpdateWebhookJSONBodyEventTypes = "contact.deleted"
+	UpdateWebhookJSONBodyEventTypesContactUpdated        UpdateWebhookJSONBodyEventTypes = "contact.updated"
+	UpdateWebhookJSONBodyEventTypesDomainCreated         UpdateWebhookJSONBodyEventTypes = "domain.created"
+	UpdateWebhookJSONBodyEventTypesDomainDeleted         UpdateWebhookJSONBodyEventTypes = "domain.deleted"
+	UpdateWebhookJSONBodyEventTypesDomainUpdated         UpdateWebhookJSONBodyEventTypes = "domain.updated"
+	UpdateWebhookJSONBodyEventTypesDomainVerified        UpdateWebhookJSONBodyEventTypes = "domain.verified"
+	UpdateWebhookJSONBodyEventTypesEmailBounced          UpdateWebhookJSONBodyEventTypes = "email.bounced"
+	UpdateWebhookJSONBodyEventTypesEmailCancelled        UpdateWebhookJSONBodyEventTypes = "email.cancelled"
+	UpdateWebhookJSONBodyEventTypesEmailClicked          UpdateWebhookJSONBodyEventTypes = "email.clicked"
+	UpdateWebhookJSONBodyEventTypesEmailComplained       UpdateWebhookJSONBodyEventTypes = "email.complained"
+	UpdateWebhookJSONBodyEventTypesEmailDelivered        UpdateWebhookJSONBodyEventTypes = "email.delivered"
+	UpdateWebhookJSONBodyEventTypesEmailDeliveryDelayed  UpdateWebhookJSONBodyEventTypes = "email.delivery_delayed"
+	UpdateWebhookJSONBodyEventTypesEmailFailed           UpdateWebhookJSONBodyEventTypes = "email.failed"
+	UpdateWebhookJSONBodyEventTypesEmailOpened           UpdateWebhookJSONBodyEventTypes = "email.opened"
+	UpdateWebhookJSONBodyEventTypesEmailQueued           UpdateWebhookJSONBodyEventTypes = "email.queued"
+	UpdateWebhookJSONBodyEventTypesEmailRejected         UpdateWebhookJSONBodyEventTypes = "email.rejected"
+	UpdateWebhookJSONBodyEventTypesEmailRenderingFailure UpdateWebhookJSONBodyEventTypes = "email.rendering_failure"
+	UpdateWebhookJSONBodyEventTypesEmailSent             UpdateWebhookJSONBodyEventTypes = "email.sent"
+	UpdateWebhookJSONBodyEventTypesEmailSuppressed       UpdateWebhookJSONBodyEventTypes = "email.suppressed"
+)
+
+// GetActivityParams defines parameters for GetActivity.
+type GetActivityParams struct {
+	Page  *int `form:"page,omitempty" json:"page,omitempty"`
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+}
 
 // GetReputationParams defines parameters for GetReputation.
 type GetReputationParams struct {
@@ -129,11 +233,11 @@ type GetContactsParams struct {
 
 // CreateContactJSONBody defines parameters for CreateContact.
 type CreateContactJSONBody struct {
-	Email      string             `json:"email"`
-	FirstName  *string            `json:"firstName,omitempty"`
-	LastName   *string            `json:"lastName,omitempty"`
-	Properties *map[string]string `json:"properties,omitempty"`
-	Subscribed *bool              `json:"subscribed,omitempty"`
+	Email      openapi_types.Email `json:"email"`
+	FirstName  *string             `json:"firstName,omitempty"`
+	LastName   *string             `json:"lastName,omitempty"`
+	Properties *map[string]string  `json:"properties,omitempty"`
+	Subscribed *bool               `json:"subscribed,omitempty"`
 }
 
 // UpdateContactJSONBody defines parameters for UpdateContact.
@@ -158,6 +262,20 @@ type UpdateContactBookJSONBody struct {
 type CreateDomainJSONBody struct {
 	Name   string `json:"name"`
 	Region string `json:"region"`
+}
+
+// GetDomainAnalyticsParams defines parameters for GetDomainAnalytics.
+type GetDomainAnalyticsParams struct {
+	Period *GetDomainAnalyticsParamsPeriod `form:"period,omitempty" json:"period,omitempty"`
+}
+
+// GetDomainAnalyticsParamsPeriod defines parameters for GetDomainAnalytics.
+type GetDomainAnalyticsParamsPeriod string
+
+// GetDomainStatsParams defines parameters for GetDomainStats.
+type GetDomainStatsParams struct {
+	StartDate *string `form:"startDate,omitempty" json:"startDate,omitempty"`
+	EndDate   *string `form:"endDate,omitempty" json:"endDate,omitempty"`
 }
 
 // ListEmailsParams defines parameters for ListEmails.
@@ -358,6 +476,42 @@ type GetUnsubscribesParams struct {
 // UpdateEmailJSONBody defines parameters for UpdateEmail.
 type UpdateEmailJSONBody = map[string]interface{}
 
+// GetEmailEventsParams defines parameters for GetEmailEvents.
+type GetEmailEventsParams struct {
+	Page      *int                        `form:"page,omitempty" json:"page,omitempty"`
+	Limit     *int                        `form:"limit,omitempty" json:"limit,omitempty"`
+	Status    *GetEmailEventsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	StartDate *time.Time                  `form:"startDate,omitempty" json:"startDate,omitempty"`
+}
+
+// GetEmailEventsParamsStatus defines parameters for GetEmailEvents.
+type GetEmailEventsParamsStatus string
+
+// GetEventsParams defines parameters for GetEvents.
+type GetEventsParams struct {
+	Page      *int                   `form:"page,omitempty" json:"page,omitempty"`
+	Limit     *int                   `form:"limit,omitempty" json:"limit,omitempty"`
+	Status    *GetEventsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	StartDate *time.Time             `form:"startDate,omitempty" json:"startDate,omitempty"`
+}
+
+// GetEventsParamsStatus defines parameters for GetEvents.
+type GetEventsParamsStatus string
+
+// GetMetricsParams defines parameters for GetMetrics.
+type GetMetricsParams struct {
+	Period *GetMetricsParamsPeriod `form:"period,omitempty" json:"period,omitempty"`
+}
+
+// GetMetricsParamsPeriod defines parameters for GetMetrics.
+type GetMetricsParamsPeriod string
+
+// GetStatsParams defines parameters for GetStats.
+type GetStatsParams struct {
+	StartDate *time.Time `form:"startDate,omitempty" json:"startDate,omitempty"`
+	EndDate   *time.Time `form:"endDate,omitempty" json:"endDate,omitempty"`
+}
+
 // GetSuppressionsParams defines parameters for GetSuppressions.
 type GetSuppressionsParams struct {
 	Page   *float32                     `form:"page,omitempty" json:"page,omitempty"`
@@ -394,6 +548,30 @@ type UpdateTemplateJSONBody struct {
 	Name    *string `json:"name,omitempty"`
 	Subject *string `json:"subject,omitempty"`
 }
+
+// CreateWebhookJSONBody defines parameters for CreateWebhook.
+type CreateWebhookJSONBody struct {
+	Description *string                           `json:"description,omitempty"`
+	EventTypes  []CreateWebhookJSONBodyEventTypes `json:"eventTypes"`
+	Secret      *string                           `json:"secret,omitempty"`
+	Url         string                            `json:"url"`
+}
+
+// CreateWebhookJSONBodyEventTypes defines parameters for CreateWebhook.
+type CreateWebhookJSONBodyEventTypes string
+
+// UpdateWebhookJSONBody defines parameters for UpdateWebhook.
+type UpdateWebhookJSONBody struct {
+	Active       *bool                              `json:"active,omitempty"`
+	Description  *string                            `json:"description"`
+	EventTypes   *[]UpdateWebhookJSONBodyEventTypes `json:"eventTypes,omitempty"`
+	RotateSecret *bool                              `json:"rotateSecret,omitempty"`
+	Secret       *string                            `json:"secret,omitempty"`
+	Url          *string                            `json:"url,omitempty"`
+}
+
+// UpdateWebhookJSONBodyEventTypes defines parameters for UpdateWebhook.
+type UpdateWebhookJSONBodyEventTypes string
 
 // CreateApiKeyJSONRequestBody defines body for CreateApiKey for application/json ContentType.
 type CreateApiKeyJSONRequestBody CreateApiKeyJSONBody
@@ -439,3 +617,9 @@ type CreateTemplateJSONRequestBody CreateTemplateJSONBody
 
 // UpdateTemplateJSONRequestBody defines body for UpdateTemplate for application/json ContentType.
 type UpdateTemplateJSONRequestBody UpdateTemplateJSONBody
+
+// CreateWebhookJSONRequestBody defines body for CreateWebhook for application/json ContentType.
+type CreateWebhookJSONRequestBody CreateWebhookJSONBody
+
+// UpdateWebhookJSONRequestBody defines body for UpdateWebhook for application/json ContentType.
+type UpdateWebhookJSONRequestBody UpdateWebhookJSONBody

@@ -33,6 +33,12 @@ type Client struct {
 	Suppressions *SuppressionsClient
 	Templates    *TemplatesClient
 	Webhooks     *WebhooksClient
+	System       *SystemClient
+	Events       *EventsClient
+	Metrics      *MetricsClient
+	Stats        *StatsClient
+	Activity     *ActivityClient
+	Teams        *TeamsClient
 }
 
 // NewClient creates a new Unsent API client
@@ -73,6 +79,12 @@ func NewClient(key string, options ...ClientOption) (*Client, error) {
 	client.Suppressions = &SuppressionsClient{client: client}
 	client.Templates = &TemplatesClient{client: client}
 	client.Webhooks = &WebhooksClient{client: client}
+	client.System = &SystemClient{client: client}
+	client.Events = &EventsClient{client: client}
+	client.Metrics = &MetricsClient{client: client}
+	client.Stats = &StatsClient{client: client}
+	client.Activity = &ActivityClient{client: client}
+	client.Teams = &TeamsClient{client: client}
 
 	return client, nil
 }
@@ -153,9 +165,20 @@ func request[T any](c *Client, method, path string, body interface{}, opts ...Re
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		var apiErr APIError
-		if err := json.Unmarshal(respBody, &apiErr); err != nil {
-			apiErr = APIError{Code: "INTERNAL_SERVER_ERROR", Message: resp.Status}
+		// Try unmarshaling into flat APIError
+		if err := json.Unmarshal(respBody, &apiErr); err != nil || apiErr.Code == "" {
+			// If flat failed or resulted in empty struct, try nested error object
+			var nestedErr struct {
+				Error APIError `json:"error"`
+			}
+			if err2 := json.Unmarshal(respBody, &nestedErr); err2 == nil && nestedErr.Error.Code != "" {
+				apiErr = nestedErr.Error
+			} else {
+				// Fallback if both fail
+				apiErr = APIError{Code: "INTERNAL_SERVER_ERROR", Message: resp.Status}
+			}
 		}
+		
 		if c.RaiseOnError {
 			return nil, &apiErr
 		}

@@ -21,7 +21,11 @@ func (c *SuppressionsClient) List(params GetSuppressionsParams) (*[]Suppression,
 	if params.Reason != nil {
 		path += fmt.Sprintf("reason=%s&", *params.Reason)
 	}
-	return Get[[]Suppression](c.client, path)
+	resp, err := Get[GetSuppressionsResponse](c.client, path)
+	if err != nil {
+		return nil, err
+	}
+	return &resp.Data, nil
 }
 
 // Add adds a suppression
@@ -33,7 +37,7 @@ func (c *SuppressionsClient) Add(payload AddSuppressionJSONBody) (*SuppressionAd
 // Note: API Ref might use email in path or body. TS SDK uses DELETE /suppressions with body { email } or path param?
 // TS SDK: `this.unsent.delete<{ deleted: boolean }>("/suppressions", { email })`
 // So it uses a body for DELETE.
+// Delete removes an email from the suppression list
 func (c *SuppressionsClient) Delete(email string) (*SuppressionDeleteResponse, *APIError) {
-	// Using map as body
-	return Delete[SuppressionDeleteResponse](c.client, "/suppressions", map[string]string{"email": email})
+	return Delete[SuppressionDeleteResponse](c.client, fmt.Sprintf("/suppressions/email/%s", email), nil)
 }

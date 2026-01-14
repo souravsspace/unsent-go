@@ -12,7 +12,7 @@ func TestSettings_Get(t *testing.T) {
 			t.Errorf("expected GET, got %s", r.Method)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"teamName": "My Team", "plan": "pro"}`))
+		w.Write([]byte(`{"name": "My Team", "plan": "pro"}`))
 	}))
 	defer server.Close()
 

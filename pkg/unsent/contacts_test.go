@@ -49,7 +49,7 @@ func TestContacts_Create(t *testing.T) {
 			t.Errorf("expected test@example.com, got %s", body.Email)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"id": "c1", "email": "test@example.com"}`))
+		w.Write([]byte(`{"contactId": "c1", "email": "test@example.com"}`))
 	}))
 	defer server.Close()
 

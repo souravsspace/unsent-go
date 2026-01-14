@@ -3,47 +3,54 @@ package unsent
 import "fmt"
 
 // WebhooksClient handles webhook-related API operations
-//
-// NOTE: Webhook functionality is currently a placeholder for future implementation.
-// These methods are included in anticipation of webhook support being added to the
-// Unsent API. When webhook endpoints become available in the API, these methods
-// will be functional without requiring SDK updates.
-//
-// Webhook events will allow you to receive real-time notifications about email
-// activities (sent, delivered, opened, clicked, bounced, etc.) by registering
-// HTTP endpoints that the Unsent API will call when events occur.
 type WebhooksClient struct {
 	client *Client
 }
 
 // List retrieves all webhooks
-//
-// NOTE: This is a placeholder method for future webhook functionality.
-// The webhook API endpoints are not yet available.
-func (c *WebhooksClient) List() (*[]Webhook, *APIError) {
-	return Get[[]Webhook](c.client, "/webhooks")
+func (w *WebhooksClient) List() (*[]Webhook, *APIError) {
+	return Get[[]Webhook](w.client, "/webhooks")
+}
+
+// Get retrieves a webhook by ID
+func (w *WebhooksClient) Get(webhookID string) (*Webhook, *APIError) {
+	return Get[Webhook](w.client, fmt.Sprintf("/webhooks/%s", webhookID))
 }
 
 // Create creates a new webhook
-//
-// NOTE: This is a placeholder method for future webhook functionality.
-// The webhook API endpoints are not yet available.
-func (c *WebhooksClient) Create(payload WebhookCreateRequest) (*WebhookCreateResponse, *APIError) {
-	return Post[WebhookCreateResponse](c.client, "/webhooks", payload)
+func (w *WebhooksClient) Create(payload CreateWebhookJSONBody) (*WebhookCreateResponse, *APIError) {
+	return Post[WebhookCreateResponse](w.client, "/webhooks", payload)
 }
 
 // Update updates a webhook
-//
-// NOTE: This is a placeholder method for future webhook functionality.
-// The webhook API endpoints are not yet available.
-func (c *WebhooksClient) Update(id string, payload WebhookUpdateRequest) (*WebhookUpdateResponse, *APIError) {
-	return Patch[WebhookUpdateResponse](c.client, fmt.Sprintf("/webhooks/%s", id), payload)
+func (w *WebhooksClient) Update(webhookID string, payload UpdateWebhookJSONBody) (*WebhookUpdateResponse, *APIError) {
+	return Patch[WebhookUpdateResponse](w.client, fmt.Sprintf("/webhooks/%s", webhookID), payload)
 }
 
 // Delete deletes a webhook
-//
-// NOTE: This is a placeholder method for future webhook functionality.
-// The webhook API endpoints are not yet available.
-func (c *WebhooksClient) Delete(id string) (*WebhookDeleteResponse, *APIError) {
-	return Delete[WebhookDeleteResponse](c.client, fmt.Sprintf("/webhooks/%s", id), nil)
+func (w *WebhooksClient) Delete(webhookID string) (*WebhookDeleteResponse, *APIError) {
+	return Delete[WebhookDeleteResponse](w.client, fmt.Sprintf("/webhooks/%s", webhookID), nil)
+}
+
+// WebhookTestResponse represents the response from testing a webhook
+type WebhookTestResponse struct {
+	ID             string   `json:"id"`
+	Type           string   `json:"type"`
+	CreatedAt      string   `json:"createdAt"`
+	UpdatedAt      string   `json:"updatedAt"`
+	TeamID         string   `json:"teamId"`
+	Status         string   `json:"status"`
+	WebhookID      string   `json:"webhookId"`
+	Payload        string   `json:"payload"`
+	Attempt        float32  `json:"attempt"`
+	NextAttemptAt  *string  `json:"nextAttemptAt,omitempty"`
+	LastError      *string  `json:"lastError,omitempty"`
+	ResponseStatus *float32 `json:"responseStatus,omitempty"`
+	ResponseTimeMs *float32 `json:"responseTimeMs,omitempty"`
+	ResponseText   *string  `json:"responseText,omitempty"`
+}
+
+// Test triggers a test event for a webhook
+func (w *WebhooksClient) Test(webhookID string) (*WebhookTestResponse, *APIError) {
+	return Post[WebhookTestResponse](w.client, fmt.Sprintf("/webhooks/%s/test", webhookID), nil)
 }

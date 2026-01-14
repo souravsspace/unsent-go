@@ -31,3 +31,37 @@ func (c *DomainsClient) Verify(domainID string) (*DomainVerifyResponse, *APIErro
 func (c *DomainsClient) Delete(domainID string) (*DomainDeleteResponse, *APIError) {
 	return Delete[DomainDeleteResponse](c.client, fmt.Sprintf("/domains/%s", domainID), nil)
 }
+
+// GetAnalytics retrieves analytics for a specific domain
+func (c *DomainsClient) GetAnalytics(id string, params GetDomainAnalyticsParams) (*interface{}, *APIError) {
+	path := fmt.Sprintf("/domains/%s/analytics", id)
+	
+	// Build query parameters
+	query := buildQueryParams(map[string]interface{}{
+		"period": params.Period,
+	})
+	
+	if query != "" {
+		path = fmt.Sprintf("%s?%s", path, query)
+	}
+	
+	return Get[interface{}](c.client, path)
+}
+
+// GetStats retrieves statistics for a specific domain
+func (c *DomainsClient) GetStats(id string, params GetDomainStatsParams) (*interface{}, *APIError) {
+	path := fmt.Sprintf("/domains/%s/stats", id)
+	
+	// Build query parameters
+	query := buildQueryParams(map[string]interface{}{
+		"startDate": params.StartDate,
+		"endDate":   params.EndDate,
+	})
+	
+	if query != "" {
+		path = fmt.Sprintf("%s?%s", path, query)
+	}
+	
+	return Get[interface{}](c.client, path)
+}
+

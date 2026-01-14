@@ -51,7 +51,7 @@ type Contact struct {
 
 // ContactCreateResponse represents the response from creating a contact
 type ContactCreateResponse struct {
-	ID        string    `json:"id"`
+	ID        string    `json:"contactId"`
 	Email     string    `json:"email"`
 	CreatedAt time.Time `json:"createdAt"`
 }
@@ -118,7 +118,7 @@ type CampaignActionResponse struct {
 // Domain represents a domain
 type Domain struct {
 	ID        string    `json:"id"`
-	Domain    string    `json:"domain"`
+	Domain    string    `json:"name"`
 	Status    string    `json:"status"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
@@ -222,7 +222,7 @@ type ContactBookDeleteResponse struct {
 
 // Settings
 type Settings struct {
-	TeamName string `json:"teamName"`
+	TeamName string `json:"name"`
 	Plan     string `json:"plan"`
 }
 
@@ -355,4 +355,86 @@ type ContactBookDetail struct {
 		UnsubscribedContacts int           `json:"unsubscribedContacts"`
 		Campaigns            []interface{} `json:"campaigns"`
 	} `json:"details,omitempty"`
+}
+
+// Event-related types
+type Event struct {
+	ID        string                 `json:"id"`
+	EmailID   string                 `json:"emailId"`
+	Type      string                 `json:"type"`
+	Status    string                 `json:"status"`
+	Timestamp time.Time              `json:"timestamp"`
+	Data      map[string]interface{} `json:"data,omitempty"`
+}
+
+type EventsListResponse struct {
+	Data []Event         `json:"data"`
+	Meta *PaginationMeta `json:"meta,omitempty"`
+}
+
+// Activity types
+type Activity struct {
+	ID        string    `json:"id"`
+	EmailID   string    `json:"emailId"`
+	Type      string    `json:"type"`
+	Email     Email     `json:"email"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+type ActivityResponse struct {
+	Data []Activity      `json:"data"`
+	Meta *PaginationMeta `json:"meta,omitempty"`
+}
+
+// Metrics types
+type Metrics struct {
+	DeliveryRate  float64 `json:"deliveryRate"`
+	OpenRate      float64 `json:"openRate"`
+	ClickRate     float64 `json:"clickRate"`
+	BounceRate    float64 `json:"bounceRate"`
+	ComplaintRate float64 `json:"complaintRate"`
+}
+
+type MetricsResponse struct {
+	Data Metrics `json:"data"`
+}
+
+// Stats types
+type Stats struct {
+	Total      int `json:"total"`
+	Sent       int `json:"sent"`
+	Delivered  int `json:"delivered"`
+	Opened     int `json:"opened"`
+	Clicked    int `json:"clicked"`
+	Bounced    int `json:"bounced"`
+	Complained int `json:"complained"`
+	Failed     int `json:"failed"`
+}
+
+type StatsResponse struct {
+	Data Stats `json:"data"`
+}
+
+// System types
+type HealthResponse struct {
+	Status string  `json:"status"`
+	Uptime float64 `json:"uptime"`
+}
+
+type VersionResponse struct {
+	Version  string `json:"version"`
+	Platform string `json:"platform"`
+}
+
+// Teams types
+type Team struct {
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Plan      string    `json:"plan"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+type TeamsListResponse struct {
+	Data []Team `json:"data"`
 }

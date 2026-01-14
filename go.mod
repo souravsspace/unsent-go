@@ -1,6 +1,6 @@
 module github.com/souravsspace/unsent-go
 
-go 1.25.2
+go 1.25.5
 
 require github.com/oapi-codegen/runtime v1.1.2
 

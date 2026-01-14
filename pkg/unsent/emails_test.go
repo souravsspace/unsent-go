@@ -75,7 +75,7 @@ func TestEmails_List(t *testing.T) {
 			t.Errorf("expected limit=50, got %s", query.Get("limit"))
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id": "email_1", "to": "test@example.com", "from": "sender@example.com", "subject": "Test", "status": "sent", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}]`))
+		w.Write([]byte(`{"data": [{"id": "email_1", "to": "test@example.com", "from": "sender@example.com", "subject": "Test", "status": "sent", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}], "count": 1}`))
 	}))
 	defer server.Close()
 
@@ -89,11 +89,11 @@ func TestEmails_List(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(*resp) != 1 {
-		t.Errorf("expected 1 email, got %d", len(*resp))
+	if len(resp.Data) != 1 {
+		t.Errorf("expected 1 email, got %d", len(resp.Data))
 	}
-	if (*resp)[0].ID != "email_1" {
-		t.Errorf("expected email_1, got %s", (*resp)[0].ID)
+	if resp.Data[0].ID != "email_1" {
+		t.Errorf("expected email_1, got %s", resp.Data[0].ID)
 	}
 }
 
@@ -110,7 +110,7 @@ func TestEmails_GetBounces(t *testing.T) {
 			t.Errorf("expected page=1.000000, got %s", query.Get("page"))
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id": "email_bounce_1", "to": "bounce@example.com", "from": "sender@example.com", "subject": "Bounced", "status": "bounced", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}]`))
+		w.Write([]byte(`{"data": [{"id": "email_bounce_1", "to": "bounce@example.com", "from": "sender@example.com", "subject": "Bounced", "status": "bounced", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}], "count": 1}`))
 	}))
 	defer server.Close()
 
@@ -124,11 +124,11 @@ func TestEmails_GetBounces(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(*resp) != 1 {
-		t.Errorf("expected 1 bounced email, got %d", len(*resp))
+	if len(resp.Data) != 1 {
+		t.Errorf("expected 1 bounced email, got %d", len(resp.Data))
 	}
-	if (*resp)[0].Status != "bounced" {
-		t.Errorf("expected status bounced, got %s", (*resp)[0].Status)
+	if resp.Data[0].Status != "bounced" {
+		t.Errorf("expected status bounced, got %s", resp.Data[0].Status)
 	}
 }
 
@@ -141,7 +141,7 @@ func TestEmails_GetComplaints(t *testing.T) {
 			t.Errorf("expected /v1/emails/complaints, got %s", r.URL.Path)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id": "email_complaint_1", "to": "complaint@example.com", "from": "sender@example.com", "subject": "Complained", "status": "complained", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}]`))
+		w.Write([]byte(`{"data": [{"id": "email_complaint_1", "to": "complaint@example.com", "from": "sender@example.com", "subject": "Complained", "status": "complained", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}], "count": 1}`))
 	}))
 	defer server.Close()
 
@@ -155,8 +155,8 @@ func TestEmails_GetComplaints(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(*resp) != 1 {
-		t.Errorf("expected 1 complaint email, got %d", len(*resp))
+	if len(resp.Data) != 1 {
+		t.Errorf("expected 1 complaint email, got %d", len(resp.Data))
 	}
 }
 
@@ -169,7 +169,7 @@ func TestEmails_GetUnsubscribes(t *testing.T) {
 			t.Errorf("expected /v1/emails/unsubscribes, got %s", r.URL.Path)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id": "email_unsub_1", "to": "unsub@example.com", "from": "sender@example.com", "subject": "Unsubscribed", "status": "unsubscribed", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}]`))
+		w.Write([]byte(`{"data": [{"id": "email_unsub_1", "to": "unsub@example.com", "from": "sender@example.com", "subject": "Unsubscribed", "status": "unsubscribed", "createdAt": "2024-01-01T00:00:00Z", "updatedAt": "2024-01-01T00:00:00Z"}], "count": 1}`))
 	}))
 	defer server.Close()
 
@@ -183,7 +183,117 @@ func TestEmails_GetUnsubscribes(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(*resp) != 1 {
-		t.Errorf("expected 1 unsubscribed email, got %d", len(*resp))
+	if len(resp.Data) != 1 {
+		t.Errorf("expected 1 unsubscribed email, got %d", len(resp.Data))
+	}
+}
+
+func TestEmails_Get(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("expected GET, got %s", r.Method)
+		}
+		if r.URL.Path != "/v1/emails/email_123" {
+			t.Errorf("expected /v1/emails/email_123, got %s", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"id": "email_123", "status": "sent"}`))
+	}))
+	defer server.Close()
+	client, _ := NewClient("key", WithBaseURL(server.URL))
+	resp, err := client.Emails.Get("email_123")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.ID != "email_123" {
+		t.Errorf("expected email_123, got %s", resp.ID)
+	}
+}
+
+func TestEmails_Batch(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "POST" {
+			t.Errorf("expected POST, got %s", r.Method)
+		}
+		if r.URL.Path != "/v1/emails/batch" {
+			t.Errorf("expected /v1/emails/batch, got %s", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"data": [{"id": "email_1"}, {"id": "email_2"}]}`))
+	}))
+	defer server.Close()
+	client, _ := NewClient("key", WithBaseURL(server.URL))
+	resp, err := client.Emails.Batch(SendBatchEmailsJSONBody{})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(resp.Data) != 2 {
+		t.Errorf("expected 2 emails, got %d", len(resp.Data))
+	}
+}
+
+func TestEmails_Update(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "PATCH" {
+			t.Errorf("expected PATCH, got %s", r.Method)
+		}
+		if r.URL.Path != "/v1/emails/email_123" {
+			t.Errorf("expected /v1/emails/email_123, got %s", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"emailId": "email_123"}`))
+	}))
+	defer server.Close()
+	client, _ := NewClient("key", WithBaseURL(server.URL))
+	resp, err := client.Emails.Update("email_123", UpdateEmailJSONBody{})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.EmailID != "email_123" {
+		t.Errorf("expected email_123, got %s", resp.EmailID)
+	}
+}
+
+func TestEmails_Cancel(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "POST" {
+			t.Errorf("expected POST, got %s", r.Method)
+		}
+		if r.URL.Path != "/v1/emails/email_123/cancel" {
+			t.Errorf("expected /v1/emails/email_123/cancel, got %s", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"emailId": "email_123"}`))
+	}))
+	defer server.Close()
+	client, _ := NewClient("key", WithBaseURL(server.URL))
+	resp, err := client.Emails.Cancel("email_123")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.EmailID != "email_123" {
+		t.Errorf("expected email_123, got %s", resp.EmailID)
+	}
+}
+
+func TestEmails_GetEvents(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("expected GET, got %s", r.Method)
+		}
+		if r.URL.Path != "/v1/emails/email_123/events" {
+			t.Errorf("expected /v1/emails/email_123/events, got %s", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"data": [{"id": "evt1", "type": "delivered"}]}`))
+	}))
+	defer server.Close()
+	client, _ := NewClient("key", WithBaseURL(server.URL))
+	resp, err := client.Emails.GetEvents("email_123", GetEmailEventsParams{})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(resp.Data) != 1 {
+		t.Errorf("expected 1 event, got %d", len(resp.Data))
 	}
 }
